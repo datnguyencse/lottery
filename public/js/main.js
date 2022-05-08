@@ -1,7 +1,7 @@
 App = {
     web3Provider: null,
     contracts: {},
-    lotteryContract: '0x3d5e53BA7FF88E743c143bAAB17C1D4f77d3001a',
+    lotteryContract: lottery.networks['42'].address,
 
     init: async function() {
       App.contracts.Lottery = TruffleContract(lottery);
