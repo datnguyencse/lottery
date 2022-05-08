@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Simple Lottery</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+
+  <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+
+  <link rel="stylesheet" type="text/css" href="./css/util.css">
+  <link rel="stylesheet" type="text/css" href="./css/main.css">
+
+  <meta name="robots" content="noindex, follow">
+
+<body>
+  <div class="container-contact100">
+    <div class="wrap-contact100">
+      <form class="contact100-form" id="guess-form">
+        <span class="contact100-form-title">
+          Deposit 0.01 FAU and Guess A Number
+        </span>
+        <div class="wrap-input100 validate-input guess" data-validate="Please enter your number"  style="display: none;">
+          <input class="input100" type="number" name="number" id="number" placeholder="Number">
+          <span class="focus-input100"></span>
+        </div>
+        <div class="container-contact100-form-btn guess" style="display: none;">
+          <button class="contact100-form-btn" id="send">
+            <span>
+              <i aria-hidden="true"></i>
+              Send
+            </span>
+          </button>
+        </div>
+        <div class="container-contact100-form-btn approve" style="display: none;">
+          <button class="contact100-form-btn" id="approve">
+            <span>
+              <i aria-hidden="true"></i>
+              Approve
+            </span>
+          </button>
+        </div>
+        <div class="container-contact100-form-btn">
+          <button class="contact100-form-btn" id="stop">
+            <span>
+              <i aria-hidden="true"></i>
+              Stop (Admin Only)
+            </span>
+          </button>
+        </div>
+        <div class="container-contact100-form-btn">
+          <h6 id="message"></h6>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="./js/jquery-3.2.1.min.js"></script>
+  <script src="./js/popper.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="./js/truffle-contract.min.js"></script>
+  <script src="./abi/fau.js"></script>
+  <script src="./abi/lottery.js"></script>
+  <script src="./js/main.js"></script>
+
+</body>
+
+</html>

@@ -33,14 +33,18 @@ contract Lottery {
     _;
   }
 
+  function balance(address addr) public view returns(uint) {
+    return token.balanceOf(addr);
+  }
+
   function guess(uint number) public playerOnly returns(bool) {
     require(active, "Game is not activated yet");
     require(number <= 99 && number >= 0,"Guess number should be between 0 and 99");
     require(players[msg.sender] == false, "Already guessed");
     require(numOfPlayers <= 100, "Full slot");
-    require(token.allowance(msg.sender, address(this)) >= 1, "Please allow this contract to use your 1 token");
+    require(token.allowance(msg.sender, address(this)) >= 10000000000000000, "Please allow this contract to use your 1 token");
 
-    token.transferFrom(msg.sender, address(this), 1);
+    token.transferFrom(msg.sender, address(this), 10000000000000000);
     numOfPlayers++;
     players[msg.sender] = true;
     guesses[number].push(msg.sender);
@@ -51,14 +55,14 @@ contract Lottery {
     uint luckyNumber = block.number % 100;
     uint total = guesses[luckyNumber].length;
     if (total == 0) {
-      token.transfer(owner, token.balanceOf(address(this)));
+      token.transfer(owner, balance(address(this)));
     } else {
       for (uint i = 0; i < total; i++) {
         address winner = guesses[luckyNumber][i];
-        token.transfer(winner, ((token.balanceOf(address(this)) * 90) / 100) / total);
+        token.transfer(winner, ((balance(address(this)) * 90) / 100) / total);
       }
 
-      token.transfer(owner, (token.balanceOf(address(this)) * 10) / 100);
+      token.transfer(owner, (balance(address(this)) * 10) / 100);
     }
 
     numOfPlayers = 0;
