@@ -114,6 +114,7 @@ $('#stop').click(async function(event) {
     let transaction = await App.stop();
     if (transaction && transaction.receipt && transaction.receipt.status == true) {
       console.log(`Stop, tx id: ${transaction.tx}`);
+      alert(`Success, tx id: ${transaction.tx}`);
     } else {
       alert(`Send stop transaction failed. Visit console for more details.`);
       console.log(transaction);
@@ -134,6 +135,7 @@ $('#approve').click(async function(event) {
       $(".guess").show();
       $(".approve").hide();
       console.log(`Approved, tx id: ${transaction.tx}`);
+      alert(`Success, tx id: ${transaction.tx}`);
     } else {
       alert(`Send approve transaction failed. Visit console for more details.`);
       console.log(transaction);
