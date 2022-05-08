@@ -1,10 +1,12 @@
 pragma solidity >= 0.8.0;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Lottery {
   using SafeMath for uint;
 
+  IERC20 token;
   address owner;
   bool active;
   uint numOfPlayers;
@@ -15,44 +17,48 @@ contract Lottery {
   mapping (uint => address[]) public guesses;
 
   constructor() public {
+    // FAU token: https://erc20faucet.com/
+    token = IERC20(0xFab46E002BbF0b4509813474841E0716E6730136);
     owner = msg.sender;
     active = true;
   }
 
-  modifier onlyowner() {
+  modifier ownerOnly() {
     require(msg.sender == owner, "Owner only.");
     _;
   }
 
-  modifier onlyplayer() {
+  modifier playerOnly() {
     require(msg.sender != owner, "Player only.");
     _;
   }
 
-  function guess(uint number) public onlyplayer payable returns(bool) {
-    require(active, "This game is not yet active");
+  function guess(uint number) public playerOnly returns(bool) {
+    require(active, "Game is not activated yet");
     require(number <= 99 && number >= 0,"Guess number should be between 0 and 99");
-    require(msg.value == 1, "Deposit value mush be 1 wei");
     require(players[msg.sender] == false, "Already guessed");
     require(numOfPlayers <= 100, "Full slot");
+    require(token.allowance(msg.sender, address(this)) >= 1, "Please allow this contract to use your 1 token");
 
+    token.transferFrom(msg.sender, address(this), 1);
     numOfPlayers++;
     players[msg.sender] = true;
     guesses[number].push(msg.sender);
     return true;
   }
 
-  function stop() public onlyowner returns(bool) {
+  function stop() public ownerOnly returns(bool) {
     uint luckyNumber = block.number % 100;
-    if (guesses[luckyNumber].length == 0) {
-      payable(owner).transfer(address(this).balance);
+    uint total = guesses[luckyNumber].length;
+    if (total == 0) {
+      token.transfer(owner, token.balanceOf(address(this)));
     } else {
-      for (uint i = 0; i < guesses[luckyNumber].length; i++) {
+      for (uint i = 0; i < total; i++) {
         address winner = guesses[luckyNumber][i];
-        payable(winner).transfer(((address(this).balance * 90) / 100) / guesses[luckyNumber].length);
+        token.transfer(winner, ((token.balanceOf(address(this)) * 90) / 100) / total);
       }
 
-      payable(owner).transfer( (address(this).balance * 10) / 100);
+      token.transfer(owner, (token.balanceOf(address(this)) * 10) / 100);
     }
 
     numOfPlayers = 0;
@@ -68,12 +74,12 @@ contract Lottery {
     return true;
   }
 
-  function close() public onlyowner returns(bool) {
+  function close() public ownerOnly returns(bool) {
     active = false;
     return true;
   }
 
-  function open() public onlyowner returns(bool) {
+  function open() public ownerOnly returns(bool) {
     active = true;
     return true;
   }
