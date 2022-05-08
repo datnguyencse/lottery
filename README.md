@@ -4,6 +4,7 @@ Simple Lottery contract and UI using FAU faucet token.
 1. Create an admin account on metamask. Save your mnemonic to secrets.json.
 2. Create https://infura.io/ account and setup a project on kovan networ. Save your projectId  to secrets.json.
 3. Create https://etherscan.io/apis account and save your api_key to secrets.json. This api key need for verify contract.
+4. Get some ETH and FAU faucet token at https://gitter.im/kovan-testnet/faucet and https://erc20faucet.com/ to 3 accounts.
 4. Run commands to compile, deploy and verify contracts.
 ```
 npm i -g truffle
