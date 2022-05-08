@@ -38,11 +38,11 @@ contract Lottery {
   }
 
   function guess(uint number) public playerOnly returns(bool) {
-    require(active, "Game is not activated yet");
-    require(number <= 99 && number >= 0,"Guess number should be between 0 and 99");
-    require(players[msg.sender] == false, "Already guessed");
-    require(numOfPlayers <= 100, "Full slot");
-    require(token.allowance(msg.sender, address(this)) >= 10000000000000000, "Please allow this contract to use your 0.01 FAU token");
+    require(active, "Game is not activated yet.");
+    require(number <= 99 && number >= 0,"Guess number should be between 0 and 99.");
+    require(players[msg.sender] == false, "Already guessed.");
+    require(numOfPlayers <= 100, "Full slot.");
+    require(token.allowance(msg.sender, address(this)) >= 10000000000000000, "Please allow this contract to use your 0.01 FAU token.");
 
     token.transferFrom(msg.sender, address(this), 10000000000000000);
     numOfPlayers++;
