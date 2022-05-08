@@ -42,7 +42,7 @@ contract Lottery {
     require(number <= 99 && number >= 0,"Guess number should be between 0 and 99");
     require(players[msg.sender] == false, "Already guessed");
     require(numOfPlayers <= 100, "Full slot");
-    require(token.allowance(msg.sender, address(this)) >= 10000000000000000, "Please allow this contract to use your 1 token");
+    require(token.allowance(msg.sender, address(this)) >= 10000000000000000, "Please allow this contract to use your 0.01 FAU token");
 
     token.transferFrom(msg.sender, address(this), 10000000000000000);
     numOfPlayers++;
@@ -54,15 +54,16 @@ contract Lottery {
   function stop() public ownerOnly returns(bool) {
     uint luckyNumber = block.number % 100;
     uint total = guesses[luckyNumber].length;
+    uint balance = balance(address(this));
     if (total == 0) {
-      token.transfer(owner, balance(address(this)));
+      token.transfer(owner, balance);
     } else {
       for (uint i = 0; i < total; i++) {
         address winner = guesses[luckyNumber][i];
-        token.transfer(winner, ((balance(address(this)) * 90) / 100) / total);
+        token.transfer(winner, ((balance * 90) / 100) / total);
       }
 
-      token.transfer(owner, (balance(address(this)) * 10) / 100);
+      token.transfer(owner, (balance * 10) / 100);
     }
 
     numOfPlayers = 0;
